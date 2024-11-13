@@ -33,7 +33,8 @@ The files that will be synced are:
 
 
 # Optimization script:
-(.venv) selinali@Selinas-MacBook-Pro mod3-Selinali01 % python project/parallel_check.py
+
+```bash
 MAP
  
 ================================================================================
@@ -401,3 +402,4 @@ Parallel structure is already optimal.
 Allocation hoisting:
 No allocation hoisting found
 None
+```
