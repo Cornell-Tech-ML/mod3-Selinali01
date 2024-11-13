@@ -346,7 +346,30 @@ def _tensor_matrix_multiply(
     b_batch_stride = b_strides[0] if b_shape[0] > 1 else 0
 
     # TODO: Implement for Task 3.2.
-    raise NotImplementedError("Need to implement for Task 3.2")
+    stride_row_a = a_strides[2]
+    stride_col_b = b_strides[1]
+    sum_limit = a_shape[-1]
+
+    # Main computation loops
+    for idx in prange(out_shape[0]):  # Parallel loop for outer dimension
+        for row in range(out_shape[1]):
+            for col in range(out_shape[2]):
+                # Initialize accumulator
+                sum_temp = 0.0
+                
+                # Calculate base indices for this element
+                a_index = idx * a_batch_stride + row * a_strides[1]
+                b_index = idx * b_batch_stride + col * b_strides[2]
+                
+                # Inner product loop with stride increments
+                for _ in range(sum_limit):
+                    sum_temp += a_storage[a_index] * b_storage[b_index]
+                    a_index += stride_row_a
+                    b_index += stride_col_b
+                
+                # Store result
+                out_index = idx * out_strides[0] + row * out_strides[1] + col * out_strides[2]
+                out[out_index] = sum_temp
 
 
 tensor_matrix_multiply = njit(_tensor_matrix_multiply, parallel=True)
