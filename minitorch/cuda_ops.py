@@ -402,7 +402,34 @@ def _mm_practice(out: Storage, a: Storage, b: Storage, size: int) -> None:
     """
     BLOCK_DIM = 32
     # TODO: Implement for Task 3.3.
-    raise NotImplementedError("Need to implement for Task 3.3")
+    # Create shared memory arrays for a and b matrices
+    a_shared = cuda.shared.array((BLOCK_DIM, BLOCK_DIM), numba.float64)
+    b_shared = cuda.shared.array((BLOCK_DIM, BLOCK_DIM), numba.float64)
+    
+    # Get thread indices
+    i = cuda.threadIdx.x
+    j = cuda.threadIdx.y
+    
+    # Initialize accumulator for dot product
+    accumulator = 0.0
+    
+    # Load data into shared memory
+    if i < size and j < size:
+        # Load elements from matrix a and b into shared memory
+        a_shared[i, j] = a[i * size + j]  # Using stride [size, 1]
+        b_shared[i, j] = b[i * size + j]  # Using stride [size, 1]
+    
+    # Ensure all threads have loaded their data
+    cuda.syncthreads()
+    
+    # Compute matrix multiplication
+    if i < size and j < size:
+        # Compute the dot product for this thread's element
+        for k in range(size):
+            accumulator += a_shared[i, k] * b_shared[k, j]
+        
+        # Write result to global memory
+        out[i * size + j] = accumulator
 
 
 jit_mm_practice = jit(_mm_practice)
