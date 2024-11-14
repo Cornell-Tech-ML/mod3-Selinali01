@@ -471,7 +471,52 @@ def _tensor_matrix_multiply(
     #    b) Copy into shared memory for b matrix
     #    c) Compute the dot produce for position c[i, j]
     # TODO: Implement for Task 3.4.
-    raise NotImplementedError("Need to implement for Task 3.4")
+    # Initialize accumulator for dot product
+    acc = 0.0
+
+    # Get output matrix dimensions
+    M = out_shape[-2]  # Rows of A
+    N = out_shape[-1]  # Cols of B
+    K = a_shape[-1]    # Cols of A / Rows of B
+
+    # Check if we're within matrix bounds
+    if i < M and j < N:
+        # Move across K dimension in BLOCK_DIM sized steps
+        for k_start in range(0, K, BLOCK_DIM):
+            # Clear shared memory
+            a_shared[pi, pj] = 0
+            b_shared[pi, pj] = 0
+            cuda.syncthreads()
+
+            # Get k position for this tile
+            k = k_start + pj
+
+            # Load data into shared memory
+            # Calculate positions in A matrix (batch, i, k)
+            if i < M and k < K:
+                a_pos = batch * a_batch_stride + i * a_strides[-2] + k * a_strides[-1]
+                a_shared[pi, pj] = a_storage[a_pos]
+
+            # Calculate positions in B matrix (batch, k, j)
+            if k < K and j < N:
+                b_pos = batch * b_batch_stride + k * b_strides[-2] + j * b_strides[-1]
+                b_shared[pi, pj] = b_storage[b_pos]
+
+            # Make sure all threads have loaded their data
+            cuda.syncthreads()
+
+            # Compute partial dot product for this tile
+            for k in range(min(BLOCK_DIM, K - k_start)):
+                acc += a_shared[pi, k] * b_shared[k, pj]
+
+            # Synchronize before loading next tile
+            cuda.syncthreads()
+
+        # Write final result to global memory
+        # Only write once per thread
+        if i < M and j < N:
+            out_pos = batch * out_strides[0] + i * out_strides[-2] + j * out_strides[-1]
+            out[out_pos] = acc
 
 
 tensor_matrix_multiply = jit(_tensor_matrix_multiply)
