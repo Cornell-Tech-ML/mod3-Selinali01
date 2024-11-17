@@ -10,9 +10,16 @@ if numba.cuda.is_available():
     GPUBackend = minitorch.TensorBackend(minitorch.CudaOps)
 
 
+#def default_log_fn(epoch, total_loss, correct, losses):
+ #   print("Epoch ", epoch, " loss ", total_loss, "correct", correct)
 def default_log_fn(epoch, total_loss, correct, losses):
-    print("Epoch ", epoch, " loss ", total_loss, "correct", correct)
-
+    import time
+    current_time = time.time()
+    if not hasattr(default_log_fn, 'last_time'):
+        default_log_fn.last_time = current_time
+    epoch_time = current_time - default_log_fn.last_time
+    default_log_fn.last_time = current_time
+    print(f"Epoch {epoch:3d} | loss {total_loss:.4f} | correct {correct:3d} | time {epoch_time:.4f}s")
 
 def RParam(*shape, backend):
     r = minitorch.rand(shape, backend=backend) - 0.5
