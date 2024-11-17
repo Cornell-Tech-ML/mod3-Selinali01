@@ -19,7 +19,7 @@ if TYPE_CHECKING:
     from typing import Callable, Optional
 
     from .tensor import Tensor
-    from .tensor_data import Index, Shape, Storage, Strides
+    from .tensor_data import Shape, Storage, Strides
 
 # TIP: Use `NUMBA_DISABLE_JIT=1 pytest tests/ -m task3_1` to run these tests without JIT.
 
@@ -30,6 +30,18 @@ Fn = TypeVar("Fn")
 
 
 def njit(fn: Fn, **kwargs: Any) -> Fn:
+    """Create a JIT-compiled function with automatic inlining.
+
+    Args:
+    ----
+        fn: Function to compile.
+        **kwargs: Additional arguments for JIT compilation.
+
+    Returns:
+    -------
+        JIT-compiled function that will be inlined during compilation.
+
+    """
     return _njit(inline="always", **kwargs)(fn)  # type: ignore
 
 
@@ -181,7 +193,8 @@ def tensor_map(
                 data = in_storage[index_to_position(in_index, in_strides)]
                 map_data = fn(data)
                 out[index_to_position(out_index, out_strides)] = map_data
-    return njit(_map, parallel=True)  
+
+    return njit(_map, parallel=True)
 
 
 def tensor_zip(
@@ -219,8 +232,9 @@ def tensor_zip(
         b_strides: Strides,
     ) -> None:
         # TODO: Implement for Task 3.1.
-        if (list(a_shape) == list(b_shape) == list(out_shape) and 
-            list(a_strides) == list(b_strides) == list(out_strides)):
+        if list(a_shape) == list(b_shape) == list(out_shape) and list(
+            a_strides
+        ) == list(b_strides) == list(out_strides):
             for i in prange(len(out)):
                 out[i] = fn(a_storage[i], b_storage[i])
         else:
@@ -230,12 +244,12 @@ def tensor_zip(
                 out_index = np.zeros(MAX_DIMS, np.int32)
                 a_index = np.zeros(MAX_DIMS, np.int32)
                 b_index = np.zeros(MAX_DIMS, np.int32)
-                
+
                 # Convert position to indices and handle broadcasting
                 to_index(i, out_shape, out_index)
                 broadcast_index(out_index, out_shape, a_shape, a_index)
                 broadcast_index(out_index, out_shape, b_shape, b_index)
-                
+
                 # Get data and apply function
                 a_data = a_storage[index_to_position(a_index, a_strides)]
                 b_data = b_storage[index_to_position(b_index, b_strides)]
@@ -278,10 +292,10 @@ def tensor_reduce(
         for i in prange(len(out)):
             out_index = np.zeros(MAX_DIMS, np.int32)
             to_index(i, out_shape, out_index)
-            
+
             # Initial value
             acc = out[index_to_position(out_index, out_strides)]
-            
+
             # Iterate over the reduction dimension
             for j in range(a_shape[reduce_dim]):
                 # Copy out_index for broadcasting
@@ -289,10 +303,10 @@ def tensor_reduce(
                 for k in range(len(out_shape)):
                     a_index[k] = out_index[k]
                 a_index[reduce_dim] = j
-                
+
                 # Apply reduction
                 acc = fn(acc, a_storage[index_to_position(a_index, a_strides)])
-            
+
             # Store result
             out[index_to_position(out_index, out_strides)] = acc
 
@@ -356,19 +370,21 @@ def _tensor_matrix_multiply(
             for col in range(out_shape[2]):
                 # Initialize accumulator
                 sum_temp = 0.0
-                
+
                 # Calculate base indices for this element
                 a_index = idx * a_batch_stride + row * a_strides[1]
                 b_index = idx * b_batch_stride + col * b_strides[2]
-                
+
                 # Inner product loop with stride increments
                 for _ in range(sum_limit):
                     sum_temp += a_storage[a_index] * b_storage[b_index]
                     a_index += stride_row_a
                     b_index += stride_col_b
-                
+
                 # Store result
-                out_index = idx * out_strides[0] + row * out_strides[1] + col * out_strides[2]
+                out_index = (
+                    idx * out_strides[0] + row * out_strides[1] + col * out_strides[2]
+                )
                 out[out_index] = sum_temp
 
 

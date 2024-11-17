@@ -1,3 +1,13 @@
+"""MiniTorch is a mini deep learning framework focused on tensor computation and automatic differentiation.
+
+This package provides core functionality for:
+- Tensor operations and mathematical computations
+- Automatic differentiation
+- Neural network modules and optimization
+- CUDA and fast operation support
+- Dataset handling and testing utilities
+"""
+
 from .testing import MathTest, MathTestVariable  # type: ignore # noqa: F401,F403
 from .fast_ops import *  # noqa: F401,F403
 from .cuda_ops import *  # noqa: F401,F403
