@@ -407,6 +407,56 @@ None
 # Simple dataset
 ### CPU
 ```bash
+Epoch   0 | loss 4.7625 | correct  35 | time 0.0000s
+Epoch  10 | loss 4.4206 | correct  49 | time 1.2905s
+Epoch  20 | loss 1.3740 | correct  50 | time 1.2298s
+Epoch  30 | loss 1.7379 | correct  49 | time 1.2115s
+Epoch  40 | loss 0.9118 | correct  50 | time 1.2015s
+Epoch  50 | loss 0.6813 | correct  50 | time 1.2432s
+Epoch  60 | loss 1.2124 | correct  50 | time 1.5120s
+Epoch  70 | loss 0.7858 | correct  49 | time 2.1759s
+Epoch  80 | loss 0.1791 | correct  50 | time 1.2113s
+Epoch  90 | loss 0.7007 | correct  50 | time 1.2038s
+Epoch 100 | loss 0.1050 | correct  50 | time 1.2026s
+Epoch 110 | loss 0.1396 | correct  50 | time 1.1879s
+Epoch 120 | loss 0.1553 | correct  50 | time 1.1789s
+Epoch 130 | loss 0.2458 | correct  50 | time 1.1967s
+Epoch 140 | loss 0.5070 | correct  50 | time 1.1940s
+Epoch 150 | loss 0.6026 | correct  50 | time 1.2265s
+Epoch 160 | loss 0.0125 | correct  50 | time 1.9865s
+Epoch 170 | loss 0.3542 | correct  50 | time 1.5968s
+Epoch 180 | loss 0.1913 | correct  50 | time 1.1930s
+Epoch 190 | loss 0.0021 | correct  50 | time 1.1957s
+Epoch 200 | loss 0.2608 | correct  50 | time 1.1876s
+Epoch 210 | loss 0.1519 | correct  50 | time 1.1794s
+Epoch 220 | loss 0.2717 | correct  50 | time 1.1996s
+Epoch 230 | loss 0.0453 | correct  50 | time 1.1983s
+Epoch 240 | loss 0.3217 | correct  50 | time 1.2000s
+Epoch 250 | loss 0.1434 | correct  50 | time 1.4624s
+Epoch 260 | loss 0.1047 | correct  50 | time 2.0248s
+Epoch 270 | loss 0.0379 | correct  50 | time 1.2120s
+Epoch 280 | loss 0.1264 | correct  50 | time 1.1925s
+Epoch 290 | loss 0.2770 | correct  50 | time 1.2093s
+Epoch 300 | loss 0.1321 | correct  50 | time 1.2026s
+Epoch 310 | loss 0.3379 | correct  50 | time 1.1917s
+Epoch 320 | loss 0.0646 | correct  50 | time 1.1949s
+Epoch 330 | loss 0.0044 | correct  50 | time 1.2162s
+Epoch 340 | loss 0.3546 | correct  50 | time 1.1900s
+Epoch 350 | loss 0.2271 | correct  50 | time 1.8573s
+Epoch 360 | loss 0.0607 | correct  50 | time 1.7347s
+Epoch 370 | loss 0.0244 | correct  50 | time 1.2061s
+Epoch 380 | loss 0.0204 | correct  50 | time 1.1969s
+Epoch 390 | loss 0.1846 | correct  50 | time 1.2098s
+Epoch 400 | loss 0.0113 | correct  50 | time 1.2186s
+Epoch 410 | loss 0.0213 | correct  50 | time 1.1968s
+Epoch 420 | loss 0.0775 | correct  50 | time 1.1897s
+Epoch 430 | loss 0.1991 | correct  50 | time 1.1953s
+Epoch 440 | loss 0.2306 | correct  50 | time 1.4246s
+Epoch 450 | loss 0.0712 | correct  50 | time 2.1552s
+Epoch 460 | loss 0.1196 | correct  50 | time 1.1908s
+Epoch 470 | loss 0.0417 | correct  50 | time 1.1984s
+Epoch 480 | loss 0.0643 | correct  50 | time 1.1997s
+Epoch 490 | loss 0.0471 | correct  50 | time 1.1912s
 ```
 
 ### GPU
@@ -416,6 +466,57 @@ None
 # XOR dataset
 ### CPU
 ```bash
+!cd $DIR; PYTHONPATH=/content/$DIR python3.12 project/run_fast_tensor.py --BACKEND cpu --HIDDEN 100 --DATASET xor --RATE 0.05
+Epoch   0 | loss 6.8296 | correct  29 | time 0.0000s
+Epoch  10 | loss 6.2447 | correct  41 | time 1.3376s
+Epoch  20 | loss 3.8040 | correct  45 | time 1.2233s
+Epoch  30 | loss 3.8895 | correct  43 | time 1.2113s
+Epoch  40 | loss 1.4958 | correct  46 | time 1.2342s
+Epoch  50 | loss 1.3840 | correct  47 | time 1.1950s
+Epoch  60 | loss 1.1705 | correct  46 | time 1.7277s
+Epoch  70 | loss 2.1305 | correct  48 | time 1.9451s
+Epoch  80 | loss 1.5707 | correct  47 | time 1.2136s
+Epoch  90 | loss 0.8814 | correct  47 | time 1.2310s
+Epoch 100 | loss 2.7508 | correct  47 | time 1.2090s
+Epoch 110 | loss 0.6619 | correct  48 | time 1.2167s
+Epoch 120 | loss 1.2975 | correct  48 | time 1.1975s
+Epoch 130 | loss 1.8650 | correct  48 | time 1.1884s
+Epoch 140 | loss 1.6000 | correct  49 | time 1.1953s
+Epoch 150 | loss 0.4435 | correct  50 | time 1.1838s
+Epoch 160 | loss 0.9548 | correct  48 | time 2.0649s
+Epoch 170 | loss 2.2341 | correct  50 | time 1.4693s
+Epoch 180 | loss 1.8368 | correct  50 | time 1.1941s
+Epoch 190 | loss 0.8682 | correct  50 | time 1.1816s
+Epoch 200 | loss 0.4202 | correct  49 | time 1.1937s
+Epoch 210 | loss 0.1157 | correct  49 | time 1.2210s
+Epoch 220 | loss 0.0841 | correct  50 | time 1.1810s
+Epoch 230 | loss 1.6767 | correct  49 | time 1.1760s
+Epoch 240 | loss 0.4805 | correct  49 | time 1.2057s
+Epoch 250 | loss 0.7873 | correct  50 | time 1.5419s
+Epoch 260 | loss 0.5304 | correct  49 | time 1.9609s
+Epoch 270 | loss 1.2844 | correct  50 | time 1.1805s
+Epoch 280 | loss 1.4727 | correct  50 | time 1.2156s
+Epoch 290 | loss 0.7695 | correct  50 | time 1.1972s
+Epoch 300 | loss 0.1086 | correct  49 | time 1.2263s
+Epoch 310 | loss 1.0260 | correct  50 | time 1.1823s
+Epoch 320 | loss 1.0376 | correct  50 | time 1.2157s
+Epoch 330 | loss 0.1072 | correct  49 | time 1.1881s
+Epoch 340 | loss 0.4128 | correct  50 | time 1.1978s
+Epoch 350 | loss 0.2315 | correct  49 | time 1.9774s
+Epoch 360 | loss 0.5271 | correct  50 | time 1.5637s
+Epoch 370 | loss 0.0251 | correct  50 | time 1.1958s
+Epoch 380 | loss 0.2018 | correct  49 | time 1.1834s
+Epoch 390 | loss 0.0831 | correct  50 | time 1.1913s
+Epoch 400 | loss 0.2144 | correct  50 | time 1.1862s
+Epoch 410 | loss 0.7835 | correct  50 | time 1.1949s
+Epoch 420 | loss 0.1430 | correct  50 | time 1.1903s
+Epoch 430 | loss 0.4259 | correct  50 | time 1.1944s
+Epoch 440 | loss 0.1183 | correct  50 | time 1.5423s
+Epoch 450 | loss 0.1149 | correct  50 | time 2.0341s
+Epoch 460 | loss 0.5993 | correct  50 | time 1.1840s
+Epoch 470 | loss 0.1403 | correct  50 | time 1.2040s
+Epoch 480 | loss 0.0621 | correct  50 | time 1.1885s
+Epoch 490 | loss 0.1260 | correct  50 | time 1.1914s
 ```
 
 ### GPU
@@ -426,6 +527,7 @@ None
 # Split dataset
 ## CPU
 ```bash
+!cd $DIR; PYTHONPATH=/content/$DIR python3.12 project/run_fast_tensor.py --BACKEND cpu --HIDDEN 100 --DATASET split --RATE 0.05
 Epoch   0 | loss 6.1296 | correct  33 | time 0.0000s
 Epoch  10 | loss 5.5595 | correct  40 | time 2.0923s
 Epoch  20 | loss 5.9561 | correct  42 | time 1.1894s
@@ -475,11 +577,12 @@ Epoch 450 | loss 0.5168 | correct  50 | time 1.2054s
 Epoch 460 | loss 0.4595 | correct  50 | time 1.1969s
 Epoch 470 | loss 0.8164 | correct  50 | time 1.1958s
 Epoch 480 | loss 0.5588 | correct  50 | time 1.7669s
-Epoch 490 | loss 0.0119 | correct  47 | time 1.7624s
+Epoch 490 | loss 0.0119 | correct  50 | time 1.7624s
 ```
 
 ## GPU
 ```bash
+!cd $DIR; PYTHONPATH=/content/$DIR python3.12 project/run_fast_tensor.py --BACKEND gpu --HIDDEN 100 --DATASET split --RATE 0.05
 Epoch  0  loss  4.973002792406712 correct 36
 Epoch  10  loss  4.045323738540773 correct 36
 Epoch  20  loss  4.323025458446253 correct 40
@@ -530,4 +633,66 @@ Epoch  460  loss  1.5897639592699586 correct 49
 Epoch  470  loss  1.1164055534133386 correct 47
 Epoch  480  loss  1.1667183488658617 correct 47
 Epoch  490  loss  0.9791359518204212 correct 49
+```
+
+
+# BIGGER DATASET:
+### CPU
+```bash
+!cd $DIR; PYTHONPATH=/content/$DIR python3.12 project/run_fast_tensor.py --BACKEND cpu --HIDDEN 250 --DATASET split --RATE 0.05
+Epoch   0 | loss 32.9153 | correct  24 | time 0.0000s
+Epoch  10 | loss 3.4666 | correct  39 | time 3.7903s
+Epoch  20 | loss 3.8376 | correct  41 | time 3.7120s
+Epoch  30 | loss 6.5789 | correct  45 | time 4.9298s
+Epoch  40 | loss 0.8202 | correct  49 | time 3.7413s
+Epoch  50 | loss 1.1303 | correct  47 | time 3.7136s
+Epoch  60 | loss 1.3793 | correct  48 | time 4.8910s
+Epoch  70 | loss 0.3568 | correct  48 | time 3.7397s
+Epoch  80 | loss 0.5874 | correct  48 | time 3.6981s
+Epoch  90 | loss 0.2264 | correct  48 | time 4.9026s
+Epoch 100 | loss 2.7446 | correct  48 | time 3.7546s
+Epoch 110 | loss 0.4693 | correct  48 | time 3.7355s
+Epoch 120 | loss 0.2691 | correct  48 | time 4.8603s
+Epoch 130 | loss 2.0739 | correct  48 | time 3.7018s
+Epoch 140 | loss 0.3035 | correct  50 | time 3.7121s
+Epoch 150 | loss 0.1153 | correct  48 | time 4.8779s
+Epoch 160 | loss 1.1639 | correct  50 | time 3.7216s
+Epoch 170 | loss 0.5423 | correct  50 | time 3.7184s
+Epoch 180 | loss 0.2335 | correct  48 | time 4.9297s
+Epoch 190 | loss 1.2612 | correct  50 | time 3.7210s
+Epoch 200 | loss 0.9335 | correct  50 | time 3.7028s
+Epoch 210 | loss 0.0748 | correct  48 | time 4.9232s
+Epoch 220 | loss 0.0600 | correct  48 | time 3.7274s
+Epoch 230 | loss 0.0937 | correct  50 | time 3.6763s
+Epoch 240 | loss 0.2829 | correct  50 | time 4.9459s
+Epoch 250 | loss 0.1616 | correct  47 | time 3.7470s
+Epoch 260 | loss 0.3180 | correct  50 | time 3.7084s
+Epoch 270 | loss 1.6756 | correct  48 | time 4.8486s
+Epoch 280 | loss 0.2361 | correct  47 | time 3.6661s
+Epoch 290 | loss 0.5936 | correct  50 | time 3.7315s
+Epoch 300 | loss 1.6548 | correct  48 | time 4.8681s
+Epoch 310 | loss 0.0770 | correct  49 | time 3.7201s
+Epoch 320 | loss 0.8941 | correct  50 | time 3.7331s
+Epoch 330 | loss 0.0470 | correct  50 | time 4.9336s
+Epoch 340 | loss 0.8119 | correct  48 | time 3.6933s
+Epoch 350 | loss 0.2658 | correct  50 | time 3.7027s
+Epoch 360 | loss 0.0572 | correct  50 | time 4.9018s
+Epoch 370 | loss 0.0470 | correct  50 | time 3.7126s
+Epoch 380 | loss 0.7127 | correct  50 | time 3.6907s
+Epoch 390 | loss 1.3405 | correct  48 | time 4.9020s
+Epoch 400 | loss 0.5378 | correct  50 | time 3.7586s
+Epoch 410 | loss 0.5959 | correct  50 | time 3.7066s
+Epoch 420 | loss 0.6908 | correct  49 | time 4.8050s
+Epoch 430 | loss 0.0136 | correct  48 | time 3.7262s
+Epoch 440 | loss 0.1071 | correct  49 | time 3.7581s
+Epoch 450 | loss 0.4452 | correct  50 | time 4.6963s
+Epoch 460 | loss 0.1754 | correct  50 | time 3.9433s
+Epoch 470 | loss 0.5195 | correct  50 | time 3.7995s
+Epoch 480 | loss 0.9898 | correct  49 | time 4.8313s
+Epoch 490 | loss 0.0496 | correct  50 | time 3.8699s
+```
+
+### GPU
+```bash
+
 ```
