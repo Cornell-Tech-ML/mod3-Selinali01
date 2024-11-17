@@ -407,6 +407,7 @@ None
 # Simple dataset
 ### CPU
 ```bash
+!cd $DIR; PYTHONPATH=/content/$DIR python3.12 project/run_fast_tensor.py --BACKEND cpu --HIDDEN 100 --DATASET simple --RATE 0.05
 Epoch   0 | loss 4.7625 | correct  35 | time 0.0000s
 Epoch  10 | loss 4.4206 | correct  49 | time 1.2905s
 Epoch  20 | loss 1.3740 | correct  50 | time 1.2298s
