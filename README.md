@@ -404,61 +404,78 @@ No allocation hoisting found
 None
 ```
 
-
 # Simple dataset
+### CPU
+```bash
+```
 
+### GPU
+```bash
+```
+
+# XOR dataset
+### CPU
+```bash
+```
+
+### GPU
+```bash
+```
+
+
+# Split dataset
 ## CPU
 ```bash
-Epoch  0  loss  6.356308824408212 correct 26
-Epoch  10  loss  5.418607162935366 correct 41
-Epoch  20  loss  4.627901407495846 correct 43
-Epoch  30  loss  2.943667037127709 correct 46
-Epoch  40  loss  2.462070425647282 correct 43
-Epoch  50  loss  2.0335613263905357 correct 48
-Epoch  60  loss  2.2090463127433164 correct 47
-Epoch  70  loss  1.075256610058709 correct 50
-Epoch  80  loss  1.3133875428547999 correct 48
-Epoch  90  loss  2.8144017911259187 correct 49
-Epoch  100  loss  2.738312518528487 correct 48
-Epoch  110  loss  1.5404031069756354 correct 49
-Epoch  120  loss  1.7163261309959839 correct 48
-Epoch  130  loss  1.4216022381460753 correct 50
-Epoch  140  loss  1.4048944129824035 correct 50
-Epoch  150  loss  1.133235355465042 correct 49
-Epoch  160  loss  0.46140588076299255 correct 50
-Epoch  170  loss  1.680154005676697 correct 50
-Epoch  180  loss  1.7332371840664194 correct 49
-Epoch  190  loss  0.6595139171132911 correct 49
-Epoch  200  loss  0.770061535287949 correct 48
-Epoch  210  loss  0.4279187110414158 correct 48
-Epoch  220  loss  1.8965365474645126 correct 49
-Epoch  230  loss  0.7923156551871902 correct 49
-Epoch  240  loss  0.24453927248631147 correct 50
-Epoch  250  loss  0.38454998212056907 correct 50
-Epoch  260  loss  0.2736513574951542 correct 50
-Epoch  270  loss  0.8685473298357281 correct 50
-Epoch  280  loss  0.5135784650165167 correct 49
-Epoch  290  loss  0.7462019300498971 correct 50
-Epoch  300  loss  0.38144368277599244 correct 50
-Epoch  310  loss  0.301577879806474 correct 50
-Epoch  320  loss  0.7608557673668518 correct 50
-Epoch  330  loss  0.2596929395024636 correct 50
-Epoch  340  loss  0.07736251040049995 correct 50
-Epoch  350  loss  0.6357074418240116 correct 50
-Epoch  360  loss  0.7275226735556826 correct 50
-Epoch  370  loss  1.4316786117701619 correct 50
-Epoch  380  loss  0.08567330327584094 correct 50
-Epoch  390  loss  0.012569998705600754 correct 50
-Epoch  400  loss  0.3244040549828151 correct 50
-Epoch  410  loss  0.383282147707516 correct 50
-Epoch  420  loss  0.05848998751408848 correct 50
-Epoch  430  loss  0.6708089577407705 correct 50
-Epoch  440  loss  0.3240682647683909 correct 50
-Epoch  450  loss  0.4678792897231626 correct 50
-Epoch  460  loss  0.10160021677497674 correct 50
-Epoch  470  loss  0.7285665175130407 correct 50
-Epoch  480  loss  0.7783227006869917 correct 50
-Epoch  490  loss  0.5454981802545661 correct 50
+Epoch   0 | loss 6.1296 | correct  33 | time 0.0000s
+Epoch  10 | loss 5.5595 | correct  40 | time 2.0923s
+Epoch  20 | loss 5.9561 | correct  42 | time 1.1894s
+Epoch  30 | loss 7.2009 | correct  43 | time 1.1951s
+Epoch  40 | loss 3.7786 | correct  41 | time 1.1959s
+Epoch  50 | loss 3.5689 | correct  43 | time 1.1885s
+Epoch  60 | loss 3.5575 | correct  42 | time 1.1884s
+Epoch  70 | loss 2.0395 | correct  42 | time 1.1918s
+Epoch  80 | loss 2.6465 | correct  48 | time 1.1826s
+Epoch  90 | loss 2.8864 | correct  49 | time 1.1787s
+Epoch 100 | loss 2.9914 | correct  48 | time 2.0135s
+Epoch 110 | loss 1.9678 | correct  45 | time 1.5828s
+Epoch 120 | loss 1.5089 | correct  48 | time 1.1974s
+Epoch 130 | loss 1.9191 | correct  49 | time 1.1829s
+Epoch 140 | loss 2.1638 | correct  49 | time 1.1754s
+Epoch 150 | loss 0.7450 | correct  48 | time 1.1728s
+Epoch 160 | loss 0.3318 | correct  49 | time 1.1682s
+Epoch 170 | loss 1.5307 | correct  49 | time 1.1734s
+Epoch 180 | loss 1.0976 | correct  49 | time 1.1668s
+Epoch 190 | loss 1.1133 | correct  49 | time 1.2789s
+Epoch 200 | loss 1.4465 | correct  49 | time 2.2637s
+Epoch 210 | loss 1.2597 | correct  49 | time 1.2128s
+Epoch 220 | loss 0.2599 | correct  49 | time 1.2037s
+Epoch 230 | loss 0.2924 | correct  46 | time 1.1994s
+Epoch 240 | loss 2.8482 | correct  50 | time 1.1960s
+Epoch 250 | loss 0.6654 | correct  50 | time 1.1889s
+Epoch 260 | loss 1.1091 | correct  50 | time 1.1974s
+Epoch 270 | loss 1.1300 | correct  50 | time 1.1754s
+Epoch 280 | loss 0.0453 | correct  49 | time 1.1786s
+Epoch 290 | loss 1.1909 | correct  49 | time 1.6584s
+Epoch 300 | loss 0.9607 | correct  49 | time 1.8695s
+Epoch 310 | loss 0.5009 | correct  50 | time 1.1963s
+Epoch 320 | loss 1.2491 | correct  50 | time 1.1955s
+Epoch 330 | loss 0.5308 | correct  50 | time 1.2031s
+Epoch 340 | loss 0.3091 | correct  49 | time 1.1817s
+Epoch 350 | loss 1.0594 | correct  50 | time 1.1805s
+Epoch 360 | loss 1.6310 | correct  48 | time 1.1904s
+Epoch 370 | loss 0.2460 | correct  49 | time 1.2035s
+Epoch 380 | loss 0.5716 | correct  50 | time 1.2150s
+Epoch 390 | loss 0.7917 | correct  50 | time 2.2954s
+Epoch 400 | loss 0.7180 | correct  50 | time 1.2416s
+Epoch 410 | loss 0.7586 | correct  50 | time 1.1794s
+Epoch 420 | loss 0.8625 | correct  50 | time 1.1916s
+Epoch 430 | loss 0.5584 | correct  49 | time 1.1951s
+Epoch 440 | loss 0.9650 | correct  49 | time 1.2237s
+Epoch 450 | loss 0.5168 | correct  50 | time 1.2054s
+Epoch 460 | loss 0.4595 | correct  50 | time 1.1969s
+Epoch 470 | loss 0.8164 | correct  50 | time 1.1958s
+Epoch 480 | loss 0.5588 | correct  50 | time 1.7669s
+Epoch 490 | loss 0.0119 | correct  47 | time 1.7624s
 ```
 
 ## GPU
