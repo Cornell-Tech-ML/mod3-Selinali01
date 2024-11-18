@@ -10,9 +10,16 @@ if numba.cuda.is_available():
     GPUBackend = minitorch.TensorBackend(minitorch.CudaOps)
 
 
+#def default_log_fn(epoch, total_loss, correct, losses):
+ #   print("Epoch ", epoch, " loss ", total_loss, "correct", correct)
 def default_log_fn(epoch, total_loss, correct, losses):
-    print("Epoch ", epoch, " loss ", total_loss, "correct", correct)
-
+    import time
+    current_time = time.time()
+    if not hasattr(default_log_fn, 'last_time'):
+        default_log_fn.last_time = current_time
+    epoch_time = current_time - default_log_fn.last_time
+    default_log_fn.last_time = current_time
+    print(f"Epoch {epoch:3d} | loss {total_loss:.4f} | correct {correct:3d} | time {epoch_time:.4f}s")
 
 def RParam(*shape, backend):
     r = minitorch.rand(shape, backend=backend) - 0.5
@@ -30,7 +37,10 @@ class Network(minitorch.Module):
 
     def forward(self, x):
         # TODO: Implement for Task 3.5.
-        raise NotImplementedError("Need to implement for Task 3.5")
+        #raise NotImplementedError("Need to implement for Task 3.5")
+        l = self.layer1.forward(x).relu()
+        l = self.layer2.forward(l).relu()
+        return self.layer3.forward(l).sigmoid()
 
 
 class Linear(minitorch.Module):
@@ -44,7 +54,10 @@ class Linear(minitorch.Module):
 
     def forward(self, x):
         # TODO: Implement for Task 3.5.
-        raise NotImplementedError("Need to implement for Task 3.5")
+        #raise NotImplementedError("Need to implement for Task 3.5")
+        batch = x @ self.weights.value
+        bias = self.bias.value
+        return batch + bias.view(1, bias.shape[0])
 
 
 class FastTrain:
@@ -116,7 +129,7 @@ if __name__ == "__main__":
     if args.DATASET == "xor":
         data = minitorch.datasets["Xor"](PTS)
     elif args.DATASET == "simple":
-        data = minitorch.datasets["Simple"].simple(PTS)
+        data = minitorch.datasets["Simple"](PTS)
     elif args.DATASET == "split":
         data = minitorch.datasets["Split"](PTS)
 
