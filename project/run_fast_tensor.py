@@ -15,11 +15,27 @@ if numba.cuda.is_available():
 def default_log_fn(epoch, total_loss, correct, losses):
     import time
     current_time = time.time()
+    
+    # Initialize time tracking attributes
     if not hasattr(default_log_fn, 'last_time'):
         default_log_fn.last_time = current_time
+        default_log_fn.total_time = 0
+        default_log_fn.epoch_count = 0
+    
     epoch_time = current_time - default_log_fn.last_time
     default_log_fn.last_time = current_time
+    
+    # Update total time and epoch count
+    default_log_fn.total_time += epoch_time
+    default_log_fn.epoch_count += 1
+    
+    # Print regular epoch info
     print(f"Epoch {epoch:3d} | loss {total_loss:.4f} | correct {correct:3d} | time {epoch_time:.4f}s")
+    
+    # Print average time when it's the final epoch
+    if epoch % 10 == 0 or epoch == max_epochs - 1:  # Add max_epochs as parameter if needed
+        avg_time = default_log_fn.total_time / default_log_fn.epoch_count
+        print(f"Average time per epoch: {avg_time:.4f}s")
 
 def RParam(*shape, backend):
     r = minitorch.rand(shape, backend=backend) - 0.5
