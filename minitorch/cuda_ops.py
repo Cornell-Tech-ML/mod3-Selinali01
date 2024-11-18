@@ -573,42 +573,40 @@ def _tensor_matrix_multiply(
     #    c) Compute the dot produce for position c[i, j]
     # TODO: Implement for Task 3.4.
     # Initialize accumulator for dot product
-    MAX_DIM = a_shape[2]
-    dot_product = 0.0
-    for block_start in range(
-        0, MAX_DIM, BLOCK_DIM
-    ):  # Process matrix in block-sized chunks
-        curr_j = block_start + pj  # Current j position within block
-        curr_i = block_start + pi  # Current i position within block
+    MAX_BLOCKS = a_shape[2]
+    accumalated_sum = 0.0
+    for block_offset in range(0, MAX_BLOCKS, BLOCK_DIM):  # iterate over each block
+        local_j_offset = block_offset + pj  # offset of local j index
+        local_i_offset = block_offset + pi  # offset of local i index
 
-        # a) Load elements from matrix A into shared memory
-        # Copy current block of matrix A into shared memory buffer
-        if i < a_shape[1] and curr_j < MAX_DIM:
-            src_idx_a = (
-                a_batch_stride * batch + a_strides[1] * i + a_strides[2] * curr_j
-            )  # Calculate source index in matrix A
-            a_shared[pi, pj] = a_storage[src_idx_a]  # Transfer to shared memory
+        # a) Copy into shared memory for a matrix.
+        # Load elements of tensor 'a' into shared memory
+        if i < a_shape[1] and local_j_offset < MAX_BLOCKS:
+            a_index = (
+                a_batch_stride * batch + a_strides[1] * i + a_strides[2] * local_j_offset
+            )  # Getting position of a_storage
+            a_shared[pi, pj] = a_storage[a_index]  # Copying into shared memory
 
-        # b) Load elements from matrix B into shared memory
-        # Copy current block of matrix B into shared memory buffer
-        if curr_i < b_shape[1] and j < b_shape[2]:
-            src_idx_b = (
-                b_batch_stride * batch + b_strides[1] * curr_i + b_strides[2] * j
-            )  # Calculate source index in matrix B
-            b_shared[pi, pj] = b_storage[src_idx_b]  # Transfer to shared memory
+        # b) Copy into shared memory for b matrix
+        # Load elements of tensor 'a' into shared memory
+        if local_i_offset < b_shape[1] and j < b_shape[2]:
+            b_index = (
+                b_batch_stride * batch + b_strides[1] * local_i_offset + b_strides[2] * j
+            )  # Getting position of a_storage
+            b_shared[pi, pj] = b_storage[b_index]  # Copying into shared memory
 
-        cuda.syncthreads()  # Ensure all threads finish memory operations
+        cuda.syncthreads()  # Synchronize threads in the block to ensure shared memory is fully populated
 
-        # Compute partial dot product within current block
+        # Compute dot product for elements in the shared block and sums over the relevant row and column for a and b respectively
         for k in range(BLOCK_DIM):
-            if (k + block_start) < MAX_DIM:
-                dot_product += a_shared[pi, k] * b_shared[k, pj]
+            if (k + block_offset) < MAX_BLOCKS:
+                accumalated_sum += a_shared[pi, k] * b_shared[k, pj]
 
-        # c) Write computed result to output matrix
-        # Store final result in output tensor
-        if i < out_shape[1] and j < out_shape[2]:
-            out_idx = out_strides[0] * batch + out_strides[1] * i + out_strides[2] * j
-            out[out_idx] = dot_product
+    # c) Compute the dot produce for position c[i, j]
+    # Store the computed value in the output tensor
+    if i < out_shape[1] and j < out_shape[2]:
+        out_loc = out_strides[0] * batch + out_strides[1] * i + out_strides[2] * j
+        out[out_loc] = accumalated_sum
 
 
 tensor_matrix_multiply = jit(_tensor_matrix_multiply)
