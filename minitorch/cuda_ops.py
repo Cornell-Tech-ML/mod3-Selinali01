@@ -520,7 +520,7 @@ def mm_practice(a: Tensor, b: Tensor) -> TensorData:
     )
     return out
 
-
+'''
 def _tensor_matrix_multiply(
     out: Storage,
     out_shape: Shape,
@@ -578,9 +578,6 @@ def _tensor_matrix_multiply(
     for block_offset in range(0, MAX_BLOCKS, BLOCK_DIM):  # iterate over each block
         local_j_offset = block_offset + pj  # offset of local j index
         local_i_offset = block_offset + pi  # offset of local i index
-
-        # a) Copy into shared memory for a matrix.
-        # Load elements of tensor 'a' into shared memory
         if i < a_shape[1] and local_j_offset < MAX_BLOCKS:
             a_index = (
                 a_batch_stride * batch + a_strides[1] * i + a_strides[2] * local_j_offset
@@ -602,11 +599,87 @@ def _tensor_matrix_multiply(
             if (k + block_offset) < MAX_BLOCKS:
                 accumalated_sum += a_shared[pi, k] * b_shared[k, pj]
 
-    # c) Compute the dot produce for position c[i, j]
-    # Store the computed value in the output tensor
     if i < out_shape[1] and j < out_shape[2]:
         out_loc = out_strides[0] * batch + out_strides[1] * i + out_strides[2] * j
         out[out_loc] = accumalated_sum
+'''
 
+def _tensor_matrix_multiply(
+    out: Storage,
+    out_shape: Shape,
+    out_strides: Strides,
+    out_size: int,
+    a_storage: Storage,
+    a_shape: Shape,
+    a_strides: Strides,
+    b_storage: Storage,
+    b_shape: Shape,
+    b_strides: Strides,
+) -> None:
+    """CUDA tensor matrix multiply function.
+
+    Requirements:
+
+    * All data must be first moved to shared memory.
+    * Only read each cell in `a` and `b` once.
+    * Only write to global memory once per kernel.
+
+    Should work for any tensor shapes that broadcast as long as ::
+
+    ```python
+    assert a_shape[-1] == b_shape[-2]
+    ```
+    Returns:
+        None : Fills in `out`
+    """
+    """CUDA tensor matrix multiply function."""
+    BLOCK_DIM = 32
+    
+    # Thread indices
+    tx = cuda.threadIdx.x    # Thread position in block
+    ty = cuda.threadIdx.y
+    i = cuda.blockIdx.x * BLOCK_DIM + tx   # Global position
+    j = cuda.blockIdx.y * BLOCK_DIM + ty
+    batch = cuda.blockIdx.z
+    
+    # Shared memory tiles
+    a_shared = cuda.shared.array((BLOCK_DIM, BLOCK_DIM), numba.float64)
+    b_shared = cuda.shared.array((BLOCK_DIM, BLOCK_DIM), numba.float64)
+    
+    # Batch offset calculation
+    a_batch_offset = batch * a_strides[0] if a_shape[0] > 1 else 0
+    b_batch_offset = batch * b_strides[0] if b_shape[0] > 1 else 0
+    
+    # Initialize accumulator
+    acc = numba.float64(0.0)
+    
+    # Iterate over tiles
+    num_tiles = (a_shape[2] + BLOCK_DIM - 1) // BLOCK_DIM
+    
+    for tile in range(num_tiles):
+        # Clear shared memory
+        a_shared[tx, ty] = 0.0
+        b_shared[tx, ty] = 0.0
+        
+        # Load current tile into shared memory
+        k = tile * BLOCK_DIM + ty
+        if i < a_shape[1] and k < a_shape[2]:
+            a_shared[tx, ty] = a_storage[a_batch_offset + i * a_strides[1] + k * a_strides[2]]
+            
+        k = tile * BLOCK_DIM + tx    
+        if k < b_shape[1] and j < b_shape[2]:
+            b_shared[tx, ty] = b_storage[b_batch_offset + k * b_strides[1] + j * b_strides[2]]
+            
+        cuda.syncthreads()
+        
+        # Compute dot product for this tile
+        for k in range(min(BLOCK_DIM, a_shape[2] - tile * BLOCK_DIM)):
+            acc += a_shared[tx, k] * b_shared[k, ty]
+            
+        cuda.syncthreads()
+    
+    # Write final result
+    if i < out_shape[1] and j < out_shape[2]:
+        out[batch * out_strides[0] + i * out_strides[1] + j * out_strides[2]] = acc
 
 tensor_matrix_multiply = jit(_tensor_matrix_multiply)
